@@ -1,5 +1,5 @@
 
-# ScaRCE Framework
+# ScaRCE Framework - CVE-2021-41773 Hunter
 [![License](https://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://github.com/HightechSec/scarce-apache2/blob/master/LICENSE.md)
 ![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg?style=flat)
 ![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg?style=flat)
