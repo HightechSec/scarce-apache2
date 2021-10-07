@@ -12,7 +12,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/HightechSec/scarce-apache2)
 ![GitHub watchers](https://img.shields.io/github/watchers/HightechSec/scarce-apache2)
 
-This tool can scan websites with CVE-2021-41773 Vulnerability That Affecting Apache2 Webserver for `Bug Hunting`/ `Pentesting Purposes`. Other than scanning, ScaRCE can run Remote Command Injections at the webservers that found from the scanning method (Only if the **MOD_CGI** is Enabled at the targeted webserver). This tool works with the provided Single target or Mass Target from a file list.
+This tool can scan websites with CVE-2021-41773 Vulnerability that are affecting Apache2 Webserver, ScaRCE can run too for executing Remote Command Injections at the webservers that found from the scanning method (Only if the **MOD_CGI** is Enabled at the targeted webserver). This tool works with the provided Single target or Mass Target from a file list. Only use this tool for `Bug Hunting`/ `Pentesting Purposes`.
 
 <img src="https://raw.githubusercontent.com/HightechSec/scarce-apache2/main/img/1-scarceapache.png" width="30%"></img> <img src="https://raw.githubusercontent.com/HightechSec/scarce-apache2/main/img/2-scarceapache.png" width="30%"></img> <img src="https://raw.githubusercontent.com/HightechSec/scarce-apache2/main/img/3-scarceapache.png" width="30%"></img> 
 ## Installation
